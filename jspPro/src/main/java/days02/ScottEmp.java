@@ -98,7 +98,7 @@ public class ScottEmp extends HttpServlet {
 		}
 		
 		request.setAttribute("e_voList", e_voList);
-		String path = "/days02/ex12_emp.jsp";
+		String path = "/days02/ex12_emp_jstl.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 		dispatcher.forward(request, response);
 		

@@ -72,7 +72,8 @@ public class ScottDept extends HttpServlet {
 		  
 		  // 포워딩 시킨다.
 		  // 서버에서부터 시작한다.
-		  String path = "/days02/ex12_dept.jsp";
+		  //String path = "/days02/ex12_dept.jsp";
+		  String path = "/days02/ex12_dept_jstl.jsp";
 		  RequestDispatcher dispatcher =  request.getRequestDispatcher(path);
 		  dispatcher.forward(request, response);
 		  
