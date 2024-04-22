@@ -1,6 +1,8 @@
 package com.util;
 
 import java.sql.Connection;
+
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -18,7 +20,7 @@ public class DBConn {
       
       if (conn == null) {
          String className = "oracle.jdbc.driver.OracleDriver";
-         String url = "jdbc:oracle:thin:@localhost:1521:xe";
+         String url = "jdbc:oracle:thin:@dongs:1521:xe";
          String user = "scott";
          String password = "tiger";
          

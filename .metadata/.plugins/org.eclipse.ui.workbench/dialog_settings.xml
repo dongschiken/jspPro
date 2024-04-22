@@ -13,7 +13,9 @@
 	</section>
 	<section name="PreferencesImportWizard">
 		<item key="" value="C:\Users\user\Desktop\jdbc.epf"/>
+		<item key="" value="C:\Users\82109\Desktop\jsp_export.epf"/>
 		<list key="WizardPreferencesExportPage1.STORE_DESTINATION_NAMES_ID">
+			<item value="C:\Users\82109\Desktop\jsp_export.epf"/>
 			<item value="C:\Users\user\Desktop\jdbc.epf"/>
 		</list>
 	</section>
