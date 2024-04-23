@@ -38,7 +38,8 @@ public interface BoardDAO {
 	// 7-1 검색된 총 페이지 수를 가져오는 함수
 	int getTotalPages(int numberPerPage, int searchCondition, String searchWord) throws SQLException;
 	
-	
+	// 해당 게시글의 비밀번호를 반환하는 메서드
+	String getOriginalPwd(long seq) throws SQLException;
 	
 	
 }

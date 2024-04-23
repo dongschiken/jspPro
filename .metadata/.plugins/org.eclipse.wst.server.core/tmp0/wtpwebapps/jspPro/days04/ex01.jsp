@@ -43,12 +43,10 @@
      7. days04.board.persistance
      	- BoardDAO
      	- BoardDAOImpl
+     8. 페이징 처리
      게시판 목록 보기 : List.java, list.jsp
      게시판 글 쓰기  : Write.java, write.jsp
   </xmp>  
-  
-  
-
 </div>
 
 <script>

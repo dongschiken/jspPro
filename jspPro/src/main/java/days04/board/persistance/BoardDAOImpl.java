@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import oracle.net.aso.p;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -160,10 +161,10 @@ public class BoardDAOImpl implements BoardDAO{
 		String 	writer;
 		String 	email;
 		Date 	writedate;
-		long 		readed;
-		String   content;
-		
-		String sql = "SELECT seq, title, writer, email, writedate, readed, content "
+		long 	readed;
+		String  content;
+		int     tag;
+		String sql = "SELECT seq, title, writer, email, writedate, readed, content, tag"
 				+ "		FROM TBL_CSTVSBOARD"
 				+ " WHERE seq = ? ";
 		try {
@@ -180,7 +181,7 @@ public class BoardDAOImpl implements BoardDAO{
 				writedate  = rs.getDate(5); 
 				readed 		= rs.getLong(6);
 				content 	= rs.getString(7);
-				
+				tag			= rs.getInt(8);
 						dto = 
 						BoardDTO.builder()
 						.seq(seq)
@@ -190,6 +191,7 @@ public class BoardDAOImpl implements BoardDAO{
 						.writedate(writedate)
 						.readed(readed)
 						.content(content)
+						.tag(tag)
 						.build();
 						
 			}
@@ -226,16 +228,18 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public int update(BoardDTO dto) throws SQLException {
 		int rowCount = 0;
-		
+	
 		String sql = "UPDATE TBL_CSTVSBOARD "
-				+ " SET email = ? , title = ?, content =? "
-				+ " WHERE seq = ? ";
+				+ " SET email = ? , title = ?, content = ? , tag = ?"
+				+ " WHERE seq = ? AND pwd = ?";
 		
 		this.pstmt = this.conn.prepareStatement(sql);
 			this.pstmt.setString(1, dto.getEmail());
 			this.pstmt.setString(2, dto.getTitle());
 			this.pstmt.setString(3, dto.getContent());
-			this.pstmt.setLong(4, dto.getSeq());
+			this.pstmt.setInt(4, dto.getTag());
+			this.pstmt.setLong(5, dto.getSeq());
+			this.pstmt.setString(6, dto.getPwd());
 		rowCount = this.pstmt.executeUpdate();
 		
 		this.pstmt.close();
@@ -549,7 +553,7 @@ public class BoardDAOImpl implements BoardDAO{
 		String sql = "SELECT CEIL(COUNT(*)/?) FROM tbl_cstvsboard ";
 		
 		// WHERE 검색조건 START
-		switch ( searchCondition) {
+		switch ( searchCondition ) {
 		case 1:  // 제목
 			sql += " WHERE REGEXP_LIKE( title, ?, 'i') ";
 			break;
@@ -578,6 +582,26 @@ public class BoardDAOImpl implements BoardDAO{
 		this.pstmt.close();				
 		return totalPages;
 		
+	}
+
+	@Override
+	public String getOriginalPwd(long seq) throws SQLException {
+		
+		String originalPwd = null;
+		String sql = " SELECT pwd "
+					+" FROM tbl_cstvsboard "
+					+" WHERE seq = ? ";
+		this.pstmt = this.conn.prepareStatement(sql);
+		
+		pstmt.setLong(1, seq);
+		ResultSet rs = pstmt.executeQuery();
+		
+		if( rs.next() ) {
+			originalPwd = rs.getString("pwd");
+		}
+		this.pstmt.close();
+		rs.close();
+		return originalPwd;
 	}
 
 	

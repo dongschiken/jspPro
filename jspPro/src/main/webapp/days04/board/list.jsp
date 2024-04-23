@@ -18,6 +18,9 @@
 span.material-symbols-outlined {
 	vertical-align: text-bottom;
 }
+.class:hover{
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -37,6 +40,17 @@ span.material-symbols-outlined {
 		<xmp class="code"> list.jsp </xmp>
 		<h2>목록 보기</h2>
 		<a href="<%= contextPath%>/cstvsboard/write.htm">글쓰기</a>
+		<select id="cmbNumberPerPage" name="cmbNumberPerPage">
+	  </select>
+	  <script>
+	    for (var i = 10; i <= 50; i+=5) {
+	     $("#cmbNumberPerPage").append(`<option>\${i}</option>`);      
+	   }
+	    
+	    $("#cmbNumberPerPage").on("change", function (){
+	       location.href = `/jspPro/cstvsboard/list.htm?currentpage=&`;   
+	    });
+	  </script> 
 		<table>
 			<thead>
 				<tr>
@@ -53,7 +67,7 @@ span.material-symbols-outlined {
 						<c:forEach items="${list }" var="dto">
 							<tr>
 								<td>${dto.seq }</td>
-								<td><a href="<%= contextPath%>/cstvsboard/view.htm"></a>${dto.title }</td>
+								<td class="title"><a href="<%=contextPath %>/cstvsboard/view.htm?seq=${dto.seq}">${dto.title}</a></td>
 								<td>${dto.writer }</td>
 								<td>${dto.writedate }</td>
 								<td>${dto.readed }</td>
@@ -69,7 +83,29 @@ span.material-symbols-outlined {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="5" align="center">[1] 2 3 4 5 6 7 8 9 10 ></td>
+					<td colspan="5" align="center">
+					<div class=pagination>
+						<c:if test="${ pDto.prev }">
+							<a href="<%= contextPath %>/cstvsboard/list.htm?currentpage=${ pDto.start-1}">&lt;</a>
+						</c:if>
+						<c:forEach var="page_num" begin="${ pDto.start }" end="${ pDto.end }" step="1">
+						<c:choose>
+							<c:when test="${ page_num == pDto.currentPage }">
+							<!-- 리스트 출력하는 페이지 갔다오지 않아도 된다.  -->
+							<%-- <a class="active" href="<%= contextPath %>/cstvsboard/list.htm?currentpage=${ page_num }">${page_num}</a> --%>
+							<a class="active" href="#">${page_num}</a>
+							</c:when>
+							<c:otherwise>
+							<a href="<%= contextPath %>/cstvsboard/list.htm?currentpage=${ page_num }">${ page_num }</a>	
+							</c:otherwise>
+						</c:choose>						
+						</c:forEach>
+						<c:if test="${ pDto.next }">
+						<a href="<%= contextPath %>/cstvsboard/list.htm?currentpage=${ pDto.end+1}">&gt;</a>
+						</c:if>
+					</div>
+					<!-- [1] 2 3 4 5 6 7 8 9 10 > -->		
+					</td>
 				</tr>
 				<tr>
 					<td colspan="5" align="center">
@@ -95,7 +131,26 @@ span.material-symbols-outlined {
 		alert("글쓰기 성공!!");
 	}else if(`<%= request.getParameter("write")%>` == "fail"){
 		alert("글쓰기 실패!!");
+	}else if(`<%= request.getParameter("delete")%>` == "success"){
+		alert("게시글 삭제 완료!!");
 	}
+	
+	// 검색어랑 검색 조건 상태 유지
+	$("#searchCondition").val(${param.searchCondition});
+	$("#searchWord").val("${param.searchWord}");
+	
+	// 검색한 후에 검색조건 검색어를 같이 보내기	
+	$(".pagination a:not(.active)").attr("href"
+         , function (index, oldHref){
+      return `\${oldHref}&searchCondition=${param.searchCondition}&searchWord=${param.searchWord}`;
+   });
+	
+	//  검색후 게시글 제목을 클릭
+	$(".title a").attr("href"
+	         , function (index, oldHref){
+	      return `\${oldHref}&currentpage=${param.currentpage}&searchCondition=${param.searchCondition}&searchWord=${param.searchWord}`;
+	   });
+	/* http://localhost:8080/jspPro/cstvsboard/list.htm?delete=success */
 </script>
 </body>
 </html>
