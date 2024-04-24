@@ -1,8 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-	String contextPath = request.getContextPath();
-%>
+<%@ include file="/WEB-INF/inc/auth.jspf" %>
+<%@ include file="/WEB-INF/inc/include.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,19 +36,28 @@ span.material-symbols-outlined {
 		<span class="material-symbols-outlined">view_list</span> jsp days00
 	</h3>
 	<div>
-		<xmp class="code"> list.jsp </xmp>
-		<h2>목록 보기</h2>
-		<a href="<%= contextPath%>/cstvsboard/write.htm">글쓰기</a>
-		<select id="cmbNumberPerPage" name="cmbNumberPerPage">
-	  </select>
-	  <script>
-	    for (var i = 10; i <= 50; i+=5) {
-	     $("#cmbNumberPerPage").append(`<option>\${i}</option>`);      
-	   }
-	    
-	    $("#cmbNumberPerPage").on("change", function (){
-	       location.href = `/jspPro/cstvsboard/list.htm?currentpage=&`;   
-	    });
+		      <xmp class="code"> list.jsp </xmp>
+      <h2>목록 보기</h2>
+      <a href="<%= contextPath%>/cstvsboard/write.htm">글쓰기</a>
+      <select id="cmbNumberPerPage" name="cmbNumberPerPage">
+     </select>
+     <script>
+       for (var i = 10; i <= 50; i+=5) {
+        $("#cmbNumberPerPage").append(`<option>\${i}</option>`); 
+       }
+       
+       var urlParams = new URLSearchParams(location.search);
+       var numberPerPage = urlParams.get('numberPerPage');
+       if (numberPerPage) {
+           $("#cmbNumberPerPage").val(numberPerPage);
+       }
+       
+       $("#cmbNumberPerPage").on("change", function (){
+          var selectedValue = $(this).val(); // 선택된 옵션 값
+           //alert(selectedValue);
+           location.href = `/jspPro/cstvsboard/list.htm?currentpage${pDto.currentPage}=&numberPerPage=\${selectedValue}`
+           
+       });
 	  </script> 
 		<table>
 			<thead>

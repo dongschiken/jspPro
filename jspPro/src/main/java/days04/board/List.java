@@ -32,7 +32,10 @@ public class List extends HttpServlet {
 		int currentPage = 1;	// 현재 페이지 번호
 		int numberPerPage = 10; // 한페이지에 출력할 게시물 수
 		
-		
+		try {
+	         numberPerPage = Integer.parseInt(request.getParameter("numberPerPage"));
+	      } catch (Exception e){      
+	      }
 	
 		// 검색 파라미터 시작
 		int searchCondition = 1;

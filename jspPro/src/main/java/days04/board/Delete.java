@@ -28,8 +28,6 @@ public class Delete extends HttpServlet {
 		// 검색 기능 + 페이징 처리
 		// edit.htm?seq=154
 		long pseq = Long.parseLong(request.getParameter("seq"));
-		
-		
 		// [ 해당 글번호의 내용 가져오기 ]
 		Connection conn = DBConn.getConnection();
 		BoardDAOImpl daoImpl = new BoardDAOImpl(conn);
@@ -76,7 +74,6 @@ public class Delete extends HttpServlet {
 			origin_pwd = daoImpl.getOriginalPwd(pseq);
 			if( origin_pwd.equals(ppwd)) {
 				int rowCount = daoImpl.delete(pseq);
-				
 				location +="/list.htm?&currentpage="+currentPage+"&searchCondition="+searchCondition+"&searchWord="+URLEncoder.encode(searchWord, "UTF-8");
 				location +="&delete=success";
 			}else if( !origin_pwd.equals(ppwd)){
