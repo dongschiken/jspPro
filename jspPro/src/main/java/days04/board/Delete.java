@@ -18,7 +18,7 @@ import com.util.DBConn;
 import days04.board.domain.BoardDTO;
 import days04.board.persistance.BoardDAOImpl;
 
-@WebServlet("/cstvsboard/delete.htm")
+//@WebServlet("/cstvsboard/delete.htm")
 public class Delete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

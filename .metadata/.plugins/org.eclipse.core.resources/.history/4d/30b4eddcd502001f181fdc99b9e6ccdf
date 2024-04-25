@@ -1,0 +1,8 @@
+package days06.mvc.command;
+
+public class Snippet {
+	public static void main(String[] args) {
+		DeleteHandler
+	}
+}
+

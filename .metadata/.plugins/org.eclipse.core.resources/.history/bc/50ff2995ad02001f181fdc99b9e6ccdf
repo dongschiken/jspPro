@@ -1,0 +1,5 @@
+package days06.mvc.controller;
+
+public class DispatcherServlet {
+
+}
